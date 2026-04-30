@@ -1,0 +1,19 @@
+Headlamp implementation summary (sanitized)
+Date: 2026-04-30
+
+Key findings
+1. A shared Headlamp kubeconfig can appear correct in a working copy but still fail to persist if a GitOps controller reconciles older source-of-truth data.
+2. Service-account namespace assumptions can be wrong across clusters. The correct token source should be derived from the binding actually granting access, not hard-coded.
+3. After updating the Git-managed source, the controller reconcile status must be checked to confirm the runtime state is truly persistent.
+4. Adding plugin containers from public registries can fail in environments that enforce registry allow-lists.
+
+Useful implementation patterns
+1. Detect the bound service-account namespace from the relevant ClusterRoleBinding before generating tokens.
+2. Generate a raw kubeconfig and a ConfigMap wrapper from the same source data to keep runtime and Git-managed artifacts aligned.
+3. Keep a repeatable update path that writes refreshed artifacts into the Git-managed repository rather than relying on live-only changes.
+4. Mirror third-party images into an approved registry before changing Git-managed manifests in policy-restricted clusters.
+
+Public-safe deliverables in this repo
+- generic kubeconfig refresh template
+- generic Git-managed repo update template
+- Kubescape image reference list for mirroring

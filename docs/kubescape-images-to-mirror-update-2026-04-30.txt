@@ -1,0 +1,49 @@
+Kubescape / Headlamp image mirror-update list
+Date: 2026-04-30
+
+Purpose
+- Use this list to mirror required public images into an approved internal registry.
+- After mirroring, update Git-managed manifests to use only the internal image paths.
+- The versions below reflect the upstream references reviewed on 2026-04-30.
+
+Required images
+1. quay.io/kubescape/headlamp-plugin:v0.10.5
+2. quay.io/kubescape/kubescape:v3.0.48
+3. quay.io/kubescape/operator:v0.2.141
+4. quay.io/kubescape/kubevuln:v0.3.134
+5. quay.io/kubescape/host-scanner:v1.0.78
+6. quay.io/kubescape/storage:v0.0.272
+7. quay.io/kubescape/node-agent:v0.3.108
+8. quay.io/kubescape/klamav:1.3.1-34_alpha
+9. quay.io/kubescape/synchronizer:v0.0.141
+10. quay.io/kubescape/http-request:v0.2.19
+11. quay.io/kubescape/kubectl:1.30.3
+12. ghcr.io/jkroepke/kube-webhook-certgen:1.8.1
+
+Optional images
+1. quay.io/kubescape/opentelemetry-collector:0.108.0
+2. quay.io/kubescape/grype-offline-db
+   - Upstream chart leaves tag blank and supports v6-latest / digest-based usage.
+   - If enabled, choose and pin the internal tag explicitly.
+3. quay.io/kubescape/prometheus-exporter:v0.2.18
+4. quay.io/kubescape/helm-release-upgrader:v0.1.0
+5. busybox:latest
+   - Needed only if nodeAgent.startupJitterContainer.enabled=true
+
+Internal mirror update template
+- <internal-registry>/<path>/headlamp-plugin:<approved-tag>
+- <internal-registry>/<path>/kubescape:<approved-tag>
+- <internal-registry>/<path>/operator:<approved-tag>
+- <internal-registry>/<path>/kubevuln:<approved-tag>
+- <internal-registry>/<path>/host-scanner:<approved-tag>
+- <internal-registry>/<path>/storage:<approved-tag>
+- <internal-registry>/<path>/node-agent:<approved-tag>
+- <internal-registry>/<path>/klamav:<approved-tag>
+- <internal-registry>/<path>/synchronizer:<approved-tag>
+- <internal-registry>/<path>/http-request:<approved-tag>
+- <internal-registry>/<path>/kubectl:<approved-tag>
+- <internal-registry>/<path>/kube-webhook-certgen:<approved-tag>
+
+Notes
+- If policy restricts public registries, deploy only the mirrored internal images.
+- Do not push a Headlamp plugin manifest that still references public registries if admission policy blocks them.
