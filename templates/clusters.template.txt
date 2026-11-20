@@ -1,0 +1,6 @@
+# One cluster per line.
+# Blank lines and comments are ignored by the generate script.
+
+cluster-a
+cluster-b
+cluster-c

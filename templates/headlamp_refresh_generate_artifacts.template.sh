@@ -10,6 +10,16 @@ TARGET_SERVICEACCOUNT="${TARGET_SERVICEACCOUNT:-headlamp}"
 TARGET_BINDING="${TARGET_BINDING:-headlamp-readonly-binding}"
 TOKEN_DURATION="${TOKEN_DURATION:-8760h}"
 
+require_real_value() {
+  local name="$1"
+  local value="$2"
+
+  if [[ -z "$value" || "$value" == \<* ]]; then
+    echo "Set $name to a real value before running this template." >&2
+    exit 1
+  fi
+}
+
 read_passcode() {
   if [[ -n "${REMOTE_LOGIN_PASSCODE:-}" ]]; then
     return
@@ -40,6 +50,9 @@ if [[ ! -f "$CLUSTERS_FILE" ]]; then
   echo "Missing cluster list: $CLUSTERS_FILE" >&2
   exit 1
 fi
+
+require_real_value "BASTION_HOST" "$BASTION_HOST"
+require_real_value "JUMP_HOST" "$JUMP_HOST"
 
 mapfile -t CLUSTERS < <(grep -vE '^\s*($|#)' "$CLUSTERS_FILE")
 if [[ "${#CLUSTERS[@]}" -eq 0 ]]; then

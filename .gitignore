@@ -5,3 +5,5 @@
 !docs/*.txt
 !templates/
 !templates/*.sh
+!templates/*.txt
+!docs/*.md
